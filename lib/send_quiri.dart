@@ -9,15 +9,31 @@ class SendQuiri extends StatefulWidget {
 
 class _SendQuiriState extends State<SendQuiri> {
   final _formKey = GlobalKey<FormState>();
+  final _userId = TextEditingController();
+  final _userQuestion = TextEditingController();
+  final _userContext = TextEditingController();
 
+  String userId = "";
+  String userContext = "";
+  String userQuestion = "";
   String message = "";
+
+  void getInput() {
+    setState(() {
+      userId = _userId.text;
+      userQuestion = _userQuestion.text;
+      userContext = _userContext.text;
+    });
+  }
+
+  bool isButtonEnabled() {
+    return userId.isNotEmpty &&
+        userContext.isNotEmpty &&
+        userQuestion.isNotEmpty;
+  }
 
   @override
   Widget build(BuildContext context) {
-    String? userId;
-    String? userQuestion;
-    String? userContext;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -43,13 +59,18 @@ class _SendQuiriState extends State<SendQuiri> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text('$userId $userQuestion $userContext'),
                       const Text(
                         'Email or user ID*',
                         style: TextStyle(fontSize: 16),
                       ),
+                      // EMAIL OR USER ID INPUT
                       TextFormField(
+                        controller: _userId,
                         onChanged: (value) {
-                          userId = value;
+                          setState(() {
+                            userId = value;
+                          });
                         },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -82,9 +103,13 @@ class _SendQuiriState extends State<SendQuiri> {
                               onPressed: () {},
                             )
                           ]),
+                      // OPENING QUESTION
                       TextFormField(
+                        controller: _userQuestion,
                         onChanged: (value) {
-                          userQuestion = value;
+                          setState(() {
+                            userQuestion = value;
+                          });
                         },
                         maxLines: 4,
                         minLines: 3,
@@ -115,9 +140,13 @@ class _SendQuiriState extends State<SendQuiri> {
                         'Context',
                         style: TextStyle(fontSize: 16),
                       ),
+                      // CONTEXT
                       TextFormField(
+                        controller: _userContext,
                         onChanged: (value) {
-                          userContext = value;
+                          setState(() {
+                            userContext = value;
+                          });
                         },
                         maxLength: 500,
                         decoration: const InputDecoration(
@@ -131,22 +160,26 @@ class _SendQuiriState extends State<SendQuiri> {
                       const SizedBox(height: 30),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
-                                ),
-                              );
-                              message = "validated!";
-                            } else {
-                              message = 'Invalid!';
-                            }
-                            print(userId);
-                            print(userQuestion);
-                            print(userContext);
-                            print(message);
-                          },
+                          onPressed: isButtonEnabled()
+                              ? () {
+                                  getInput();
+                                  if (_formKey.currentState!.validate()) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Processing Data'),
+                                      ),
+                                    );
+                                    message = "validated!";
+                                  } else {
+                                    message = 'Invalid!';
+                                  }
+
+                                  // print(userId);
+                                  // print(userQuestion);
+                                  // print(userContext);
+                                  // print(message);
+                                }
+                              : null,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
