@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiri_redo/single_quiri.dart';
 
 class HomeQuiri extends StatefulWidget {
   const HomeQuiri({super.key});
@@ -34,52 +35,59 @@ class _HomeQuiriState extends State<HomeQuiri> {
       ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-        child: Center(
-          child: ToggleButtons(
-            renderBorder: false,
-            fillColor: const Color.fromRGBO(0, 0, 0, 0),
-            onPressed: (int index) {
-              setState(() {
-                isSelected[index] = !isSelected[index];
-                isSelected[1 - index] = !isSelected[index];
-              });
-            },
-            isSelected: isSelected,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 70),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        color: isSelected[0]
-                            ? const Color.fromRGBO(255, 149, 104, 1)
-                            : const Color.fromRGBO(0, 0, 0, 0),
-                        width: 3.5),
+        child: Column(
+          children: [
+            Center(
+              child: ToggleButtons(
+                renderBorder: false,
+                fillColor: const Color.fromRGBO(0, 0, 0, 0),
+                onPressed: (int index) {
+                  setState(() {
+                    isSelected[index] = !isSelected[index];
+                    isSelected[1 - index] = !isSelected[index];
+                  });
+                },
+                isSelected: isSelected,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 70),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: isSelected[0]
+                                ? const Color.fromRGBO(255, 149, 104, 1)
+                                : const Color.fromRGBO(0, 0, 0, 0),
+                            width: 3.5),
+                      ),
+                    ),
+                    child: const Text(
+                      'Active',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Active',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 70),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        color: isSelected[1]
-                            ? const Color.fromRGBO(255, 149, 104, 1)
-                            : const Color.fromRGBO(0, 0, 0, 0),
-                        width: 3.5),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 70),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: isSelected[1]
+                                ? const Color.fromRGBO(255, 149, 104, 1)
+                                : const Color.fromRGBO(0, 0, 0, 0),
+                            width: 3.5),
+                      ),
+                    ),
+                    child: const Text(
+                      'Idle',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Idle',
-                  style: TextStyle(color: Colors.black),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const SingleQuiri(),
+            const SingleQuiri(),
+            const SingleQuiri(),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
